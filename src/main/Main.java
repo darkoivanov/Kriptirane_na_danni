@@ -63,11 +63,66 @@ public class Main {
 							System.out.println("GRESHKA pri vyvejdane na dannite");
 						}
 						break;
+					case 2:
+						System.out.println("Proveri za nalichni dannite: ");
+						String inputChk = "";
+						while(scanner.hasNextLine()) {
+							try {
+								inputChk = scanner.nextLine();
+							} catch (InputMismatchException e) {
+								System.out.println("Nevalidno vavedeni danni.");
+							}
+							
+							if(!inputChk.isEmpty()) {
+								break;
+							}
+						}
+						 
+						String dataChk = null;
+						try {
+							dataChk = MD5.Encrypt(inputChk);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							System.out.println("Dannite ne mogat da bydat kriptirani zaradi problem.");
+						}
+						
+						Sql sqlChk = new Sql();
+						String dta = sqlChk.SelectByData(dataChk);
+						if(dta != null) {
+							System.out.println("Dannite syshtestvvat v bazata danni");
+						}else {
+							System.out.println("Dannite ne syshtesvuvat ");
+						}
+						break;
+					default:
+						System.out.println("Molq vyvedete validen izbor");
+				}
 				
-				  
+				break;
+			case 0:
+				System.out.println("Siguren li si che iskash da restartirash proekta?");
+                System.out.println("1 - Da");
+                System.out.println("0 - Ne");
+
+                System.out.print("Izbor: ");
+                int boolOpt = scanner.nextInt();
+
+                if(boolOpt == 1) {
+                        Sql sql = new Sql();
+
+                        boolean IS_DEL = sql.DeleteEncryptData();
+
+
+                        if(IS_DEL) {
+                                System.out.println("Proekta se restartira uspeshno");
+                        }else {
+                                System.out.println("GRESHKA pri restarirane na proekta");
+                        }
+                }
+                break;
 			default:
 				System.out.println("Molq vavedete validen izbor ");
 		}
-		}
 	}
-	}
+
+}
